@@ -8,7 +8,7 @@ void otaSetup(){
     // if (ota_mode) // Solo entra en modo OTA una vez
     //   return;
     // ota_mode = true;
-    digitalWrite(LED_INTERNO, LED_INTERNO_ON);
+    digitalWrite(LED_INT, LED_INT_ON);
     WiFi.softAP(APP_NAME);
     IPAddress myIP = WiFi.softAPIP(); // IP 192.168.4.1
     Serial.print("AP IP address: ");
