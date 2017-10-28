@@ -41,6 +41,7 @@ void rpiConmutar(){
     digitalWrite(RPI_PIN, HIGH);
     digitalWrite(RELE, RELE_ON);
   }
+  mqttSendState();
 }
 
 bool getEstadoRpi(){
