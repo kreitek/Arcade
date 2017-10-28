@@ -13,11 +13,23 @@ void setup() {
   delay(50);
   // Boton pulsado al inicio -> modo OTA
   _modo_ota = digitalRead(PULSADOR_INT) == PULSADOR_INT_PULSADO;
+
+
+
+
+  // ELIMINAR!!!!!!!
+  _modo_ota = false;
+
+
+
+
+
   if (_modo_ota)
     otaSetup();
   else
     wifiSetup();
-  digitalWrite(LED_INT, LED_INT_OFF);
+    mqttSetup();
+    digitalWrite(LED_INT, LED_INT_OFF);
 }
 
 void loop() {
@@ -27,10 +39,11 @@ void loop() {
     resetLoop(); // Reinicia si se mantiene pulsado el boton externo mas de x seg
   }
   else {
-    imAliveLoop(); // pequeño parpadeo cada x seg para indicar que sigue funcionando
-    rpiLoop();
-    resetLoop(); // Reinicia si se mantiene pulsado el boton externo mas de x seg
-    PULSADOR_INTOtaLoop(); // Este loop al final de este bloque (si PULSADOR_INT -> modo OTA)
+    mqttLoop();
+    // imAliveLoop(); // pequeño parpadeo cada x seg para indicar que sigue funcionando
+    // rpiLoop();
+    // resetLoop(); // Reinicia si se mantiene pulsado el boton externo mas de x seg
+    // PULSADOR_INTOtaLoop(); // Este loop al final de este bloque (si PULSADOR_INT -> modo OTA)
   }
   delay(20);
 }
