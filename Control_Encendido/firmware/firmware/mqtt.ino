@@ -12,19 +12,23 @@ int value = 0;
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
   Serial.print(topic);
-  Serial.print("] ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.println();
+  Serial.println("] ");
 
-  // Switch on the LED if an 1 was received as first character
-  if ((char)payload[0] == '1') {
-    Serial.println("Encender");
-    // but actually the LED is on; this is because
-    // it is acive low on the ESP-01)
-  } else {
+  // for (int i = 0; i < length; i++) {
+  //   Serial.print((char)payload[i]);
+  // }
+  // Serial.println();
+
+  int value = getDomoticzValue(payload);
+
+  if (value == 0){
     Serial.println("Apagar");
+  }
+  else if (value == 1){
+    Serial.println("Encender");
+  }
+  else{
+    Serial.println("El mensaje no es para nosotros");
   }
 
 }
