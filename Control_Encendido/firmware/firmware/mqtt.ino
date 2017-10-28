@@ -11,6 +11,7 @@ int value = 0;
 
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
   Serial.println("!!!!!!!!!!!!!!!ALGO!!!!!!!!!!!!!!!!!");
+  Serial.println(length);
   return;
 
   Serial.print("Message arrived [");

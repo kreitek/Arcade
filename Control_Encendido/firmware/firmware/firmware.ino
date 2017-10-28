@@ -1,3 +1,4 @@
+#define MQTT_MAX_PACKET_SIZE 512
 #include "config/all.h"
 
 // Renombrar userconfig_example.h a userconfig.h e introducir credenciales allí
