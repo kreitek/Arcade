@@ -10,10 +10,6 @@ char _mqtt_msg[75];
 int value = 0;
 
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
-  Serial.println("!!!!!!!!!!!!!!!ALGO!!!!!!!!!!!!!!!!!");
-  Serial.println(length);
-  return;
-
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
