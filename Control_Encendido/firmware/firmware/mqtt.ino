@@ -5,9 +5,8 @@ const char* mqtt_server = MQTT_BROKER;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-long lastMsg = 0;
+
 char _mqtt_msg[75];
-int value = 0;
 
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
@@ -23,16 +22,18 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
 
   if (value == 0){
     Serial.println("Apagar");
+    rpiApagar();
   }
   else if (value == 1){
     Serial.println("Encender");
+    rpiEncender();
   }
   else{
     Serial.println("El mensaje no es para nosotros");
   }
-
 }
 
+// TODO reconnect que no bloquee
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
@@ -71,19 +72,22 @@ void mqttLoop() {
   }
   client.loop();
 
-  long now = millis();
-  if (now - lastMsg > 15000) {
-    lastMsg = now;
-    ++value;
-    static bool onoff = false;
-    onoff = !onoff;
-    // snprintf (_mqtt_msg, 75, "hello world #%ld", value);
-    // snprintf (_mqtt_msg, 75, "{ \"idx\" : %d, \"nvalue\" : %d, \"svalue\" : \"0\" }", DOMOTICZ_IDX, onoff? 1:0);
-    snprintf (_mqtt_msg, 75, "{\"command\" : \"addlogmessage\", \"message\" : \"Hola\" }");
+  mqttHeartbeat();
 
+}
 
-    Serial.print("Publish message: ");
-    Serial.println(_mqtt_msg);
-    client.publish(DOMOTICZ_IN_TOPIC, _mqtt_msg);
+void mqttHeartbeat(){
+  static unsigned long mqtt_heartbeat_time = 0;
+  if (millis() > mqtt_heartbeat_time) {
+    mqtt_heartbeat_time = millis() + HEARTBEAT_FREC;
+    mqttSendState();
   }
+}
+
+void mqttSendState(){
+  snprintf (_mqtt_msg, 75, "{ \"idx\" : %d, \"nvalue\" : %d, \"svalue\" : \"0\" }", DOMOTICZ_IDX, getEstadoRpi());
+  // snprintf (_mqtt_msg, 75, "{\"command\" : \"addlogmessage\", \"message\" : \"Hola\" }");
+  Serial.print("Enviando estado: ");
+  Serial.println(_mqtt_msg);
+  client.publish(DOMOTICZ_IN_TOPIC, _mqtt_msg);
 }

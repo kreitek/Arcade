@@ -14,17 +14,6 @@ void setup() {
   delay(50);
   // Boton pulsado al inicio -> modo OTA
   _modo_ota = digitalRead(PULSADOR_INT) == PULSADOR_INT_PULSADO;
-
-
-
-
-  // ELIMINAR!!!!!!!
-  _modo_ota = false;
-
-
-
-
-
   if (_modo_ota)
     otaSetup();
   else
@@ -41,10 +30,10 @@ void loop() {
   }
   else {
     mqttLoop();
-    // imAliveLoop(); // pequeño parpadeo cada x seg para indicar que sigue funcionando
-    // rpiLoop();
-    // resetLoop(); // Reinicia si se mantiene pulsado el boton externo mas de x seg
-    // PULSADOR_INTOtaLoop(); // Este loop al final de este bloque (si PULSADOR_INT -> modo OTA)
+    imAliveLoop(); // pequeño parpadeo cada x seg para indicar que sigue funcionando
+    rpiLoop();
+    resetLoop(); // Reinicia si se mantiene pulsado el boton externo mas de x seg
+    PULSADOR_INTOtaLoop(); // Este loop al final de este bloque (si PULSADOR_INT -> modo OTA)
   }
   delay(20);
 }
