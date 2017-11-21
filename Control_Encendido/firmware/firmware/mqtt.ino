@@ -1,3 +1,5 @@
+#ifdef DOMOTICZ_IDX
+
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
@@ -83,3 +85,5 @@ void mqttSendState(){
   Serial.println(_mqtt_msg);
   client.publish(DOMOTICZ_IN_TOPIC, _mqtt_msg);
 }
+
+#endif

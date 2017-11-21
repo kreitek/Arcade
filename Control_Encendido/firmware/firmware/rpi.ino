@@ -1,5 +1,5 @@
 unsigned long _rpi_rele_off_time = 0;
-bool  _pdte_apagar = false;
+bool _pdte_apagar = false;
 bool _estado_rpi = false; // al arrancar comienza apagado (rele off)
 
 void rpiLoop(){
@@ -10,6 +10,7 @@ void rpiLoop(){
   if (_pdte_apagar)
     if (millis() > _rpi_rele_off_time){
       digitalWrite(RELE, RELE_OFF);
+      digitalWrite(RPI_PIN, HIGH);
       _pdte_apagar = false;
     }
 }
@@ -41,7 +42,9 @@ void rpiConmutar(){
     digitalWrite(RPI_PIN, HIGH);
     digitalWrite(RELE, RELE_ON);
   }
-  mqttSendState();
+  #ifdef DOMOTICZ_IDX
+    mqttSendState();
+  #endif
 }
 
 bool getEstadoRpi(){
