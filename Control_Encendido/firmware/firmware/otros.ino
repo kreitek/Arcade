@@ -9,6 +9,7 @@ void imAliveLoop(){
       digitalWrite(LED_INT, LED_INT_OFF);
       im_alive_time = millis() + 8000;
       onoroff = false;
+      DEBUGPRINT("Sistema funcionando desde hace %lu seg\n", millis()/1000);
     }
     else{
       digitalWrite(LED_INT, LED_INT_ON);

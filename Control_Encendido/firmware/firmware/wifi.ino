@@ -8,4 +8,5 @@ void wifiSetup(){
     delay(5000);
     ESP.restart();
   }
+  Serial.println(WiFi.localIP());
 }

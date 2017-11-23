@@ -11,8 +11,8 @@ void otaSetup(){
     digitalWrite(LED_INT, LED_INT_ON);
     WiFi.softAP(APP_NAME);
     IPAddress myIP = WiFi.softAPIP(); // IP 192.168.4.1
-    Serial.print("AP IP address: ");
-    Serial.println(myIP);
+    // Serial.print("AP IP address: ");
+    // Serial.println(myIP);
 
     // Port defaults to 8266
     // ArduinoOTA.setPort(8266);

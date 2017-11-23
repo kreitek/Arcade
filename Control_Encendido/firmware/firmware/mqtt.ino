@@ -30,43 +30,42 @@ void reconnect() {
   static unsigned long last_attempt = 0;
   if (millis() < last_attempt)
     return;
-  Serial.print("Attempting MQTT connection...");
+  DEBUGPRINT("Intentando conectar a broker MQTT...");
   // Create a random client ID
   String clientId = APP_NAME;
-  clientId += "-" + String(random(0xffff), HEX);
+  // clientId += "-" + String(random(0xffff), HEX);
   // Attempt to connect
   if (client.connect(clientId.c_str())) {
-    Serial.println("connected");
+    DEBUGPRINT(" Conectado!\n");
     client.subscribe(DOMOTICZ_OUT_TOPIC);
   } else {
-    Serial.print("failed, rc=");
-    Serial.println(client.state());
+    DEBUGPRINT(" FALLO!!!, rc=%s\n", client.state());
+    // Serial.println("failed, rc=");
+    // Serial.println(client.state());
   }
   last_attempt = millis() + 5000;
 }
 
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] : ");
+  DEBUGPRINT("Message arrived [%s]\n", topic);
 
   // for (int i = 0; i < length; i++) {
   //   Serial.print((char)payload[i]);
   // }
-  // Serial.println();
+  // Serial.println;
 
   int value = getDomoticzValue(payload);
 
   if (value == 0){
-    Serial.println("Apagar");
+    DEBUGPRINT("Apagar\n");
     rpiApagar();
   }
   else if (value == 1){
-    Serial.println("Encender");
+    DEBUGPRINT("Encender\n");
     rpiEncender();
   }
   else{
-    Serial.println("El mensaje no es para nosotros");
+    DEBUGPRINT("El mensaje no es para nosotros\n");
   }
 }
 
@@ -81,8 +80,7 @@ void mqttHeartbeat(){
 void mqttSendState(){
   snprintf (_mqtt_msg, 75, "{ \"idx\" : %d, \"nvalue\" : %d, \"svalue\" : \"0\" }", DOMOTICZ_IDX, getEstadoRpi());
   // snprintf (_mqtt_msg, 75, "{\"command\" : \"addlogmessage\", \"message\" : \"Hola\" }");
-  Serial.print("Enviando estado: ");
-  Serial.println(_mqtt_msg);
+  DEBUGPRINT("Enviando estado: %s\n", _mqtt_msg);
   client.publish(DOMOTICZ_IN_TOPIC, _mqtt_msg);
 }
 

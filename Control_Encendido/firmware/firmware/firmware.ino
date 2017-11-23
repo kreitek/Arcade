@@ -14,6 +14,7 @@ void setup() {
   delay(50);
   // Boton pulsado al inicio -> modo OTA
   _modo_ota = digitalRead(PULSADOR_INT) == PULSADOR_INT_PULSADO;
+
   if (_modo_ota){
     otaSetup();
   }
@@ -21,6 +22,9 @@ void setup() {
     #ifdef DOMOTICZ_IDX
       wifiSetup();
       mqttSetup();
+    #endif
+    #if DEBUGOUTPUT == DEBUGOUTPUTTELNET
+      telnetSetup();
     #endif
     digitalWrite(LED_INT, LED_INT_OFF);
   }
@@ -35,6 +39,9 @@ void loop() {
   else {
     #ifdef DOMOTICZ_IDX
       mqttLoop();
+    #endif
+    #if DEBUGOUTPUT == DEBUGOUTPUTTELNET
+      telnetLoop();
     #endif
     imAliveLoop(); // pequeño parpadeo cada x seg para indicar que sigue funcionando
     rpiLoop();
