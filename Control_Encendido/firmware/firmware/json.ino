@@ -1,12 +1,13 @@
 #include <ArduinoJson.h>
 
- // StaticJsonBuffer<512> jsonBuffer;
- DynamicJsonBuffer  jsonBuffer(512);
 
  int getDomoticzValue(byte* json) {
+   StaticJsonBuffer<256> jsonBuffer;
+  //  DynamicJsonBuffer  jsonBuffer(512);
+
    JsonObject& root = jsonBuffer.parseObject(json); // "{\"idx\" : 40}"
    if (!root.success()) {
-     Serial.println("parseObject() failed");
+     DEBUGPRINT("parseObject() falló\n");
      return -1;
    }
    //double latitude = root["data"][0];

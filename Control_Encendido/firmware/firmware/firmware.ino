@@ -46,6 +46,7 @@ void loop() {
     imAliveLoop(); // pequeño parpadeo cada x seg para indicar que sigue funcionando
     rpiLoop();
     resetLoop(); // Reinicia si se mantiene pulsado el boton externo mas de x seg
+    resetPeriodicoLoop(); // Reinicia cada 30 dias, por estabilidad y para evitar desbordamiento de millis()
     PulsadorOtaLoop(); // Este loop al final de este bloque (si PULSADOR_INT -> modo OTA)
   }
   delay(20);

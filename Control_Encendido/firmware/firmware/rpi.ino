@@ -50,3 +50,7 @@ void rpiConmutar(){
 bool getEstadoRpi(){
   return _estado_rpi ? 1 : 0;
 }
+
+bool isRpiCompletamenteApagada(){
+  return !_estado_rpi && !_pdte_apagar;
+}

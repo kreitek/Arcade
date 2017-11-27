@@ -28,6 +28,17 @@ void blinkLoop(){
   }
 }
 
+const unsigned long TREINTA_DIAS = 30 * 24 * 60 * 60 * 1000;
+
+void resetPeriodicoLoop(){
+  // Reinicia cada 30 dias, por estabilidad y para evitar desbordamiento de millis()
+  if (millis() > TREINTA_DIAS && isRpiCompletamenteApagada()){
+    #ifdef DOMOTICZ_IDX
+      mqttSendLog();
+    #endif
+    ESP.restart();
+  }
+}
 
 // Reinicia si se mantiene pulsado el boton externo mas de x seg
 void resetLoop() {

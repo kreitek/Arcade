@@ -8,7 +8,7 @@ const char* mqtt_server = MQTT_BROKER;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-char _mqtt_msg[75];
+char _mqtt_msg[150];
 
 void mqttSetup() {
   randomSeed(micros()); // Para generar numero de cliente
@@ -47,7 +47,7 @@ void reconnect() {
 }
 
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
-  DEBUGPRINT("Message arrived [%s]\n", topic);
+  DEBUGPRINT("Mensaje MQTT en topic [%s]\n", topic);
 
   // for (int i = 0; i < length; i++) {
   //   Serial.print((char)payload[i]);
@@ -78,9 +78,14 @@ void mqttHeartbeat(){
 }
 
 void mqttSendState(){
-  snprintf (_mqtt_msg, 75, "{ \"idx\" : %d, \"nvalue\" : %d, \"svalue\" : \"0\" }", DOMOTICZ_IDX, getEstadoRpi());
-  // snprintf (_mqtt_msg, 75, "{\"command\" : \"addlogmessage\", \"message\" : \"Hola\" }");
+  snprintf (_mqtt_msg, 150, "{ \"idx\" : %d, \"nvalue\" : %d, \"svalue\" : \"0\" }", DOMOTICZ_IDX, getEstadoRpi());
   DEBUGPRINT("Enviando estado: %s\n", _mqtt_msg);
+  client.publish(DOMOTICZ_IN_TOPIC, _mqtt_msg);
+}
+
+void mqttSendLog(){
+  snprintf (_mqtt_msg, 150, "{\"command\" : \"addlogmessage\", \"message\" : \"[%s]Reiniciando sistema tras %lu seg\" }", APP_NAME, millis()/1000);
+  DEBUGPRINT("Enviando log: %s\n", _mqtt_msg);
   client.publish(DOMOTICZ_IN_TOPIC, _mqtt_msg);
 }
 
